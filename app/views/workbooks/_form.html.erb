@@ -1,0 +1,21 @@
+<%= form_for @workbook, :html => { :multipart => true } do |f| %>
+
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+   <div class="field">
+    <%= f.label :bookmark_file %><br />
+    <%= f.text_field :bookmark_file %>
+  </div>
+  <div>
+    <%= f.label :bookmark %><br />
+   <%= f.file_field :bookmark %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  
+<% end %>

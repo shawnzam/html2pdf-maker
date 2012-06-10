@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+    <%= @workbook.title %>
+</p>
+<p>
+<%= link_to 'bookmark file', @workbook.bookmark.url  %>
+
+</p>
+
+<%= form_tag({:action => "choose", :controller => "workbooks", :workbook_id => @workbook.id}, :html => {:multipart => true }) do |f| %>
+ 	<ul>
+ 	<% @workbook.urls.each do |u| %>
+    <li>
+      <%= check_box_tag "url_ids[]", u.id %>
+      <%= u.url %>
+      <% if u.use?%>
+      	use
+      <% end %>	
+    </li>
+  <% end %>
+ </ul>
+  <%= submit_tag "Create PDF" %>
+<% end %>
+
+
+
+
+<%= link_to 'Back', workbooks_path %>
