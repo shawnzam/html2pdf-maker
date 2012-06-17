@@ -8,15 +8,20 @@
 <%= link_to 'bookmark file', @workbook.bookmark.url  %>
 
 </p>
+<% if @workbook.pdf? %>
+    <p>
+    <%= link_to 'pdf file', @workbook.pdf.url(:original, false)  %>
+    </p>
+<% end %>
 
 <%= form_tag({:action => "choose", :controller => "workbooks", :workbook_id => @workbook.id}, :html => {:multipart => true }) do |f| %>
  	<ul>
  	<% @workbook.urls.each do |u| %>
     <li>
-      <%= check_box_tag "url_ids[]", u.id %>
+      <%= check_box_tag "url_ids[]", u.id, (u.use ?  true : false ) %>
       <%= u.url %>
       <% if u.use?%>
-      	use
+      	<strong>use</strong>
       <% end %>	
     </li>
   <% end %>

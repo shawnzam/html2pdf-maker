@@ -1,3 +1,14 @@
-<% @workbooks.each do |job| %>
-<p><%= job.title %></p>
+<% @workbooks.each do |workbook| %>
+<div>
+<p><%= workbook.title %></p>
+
+<%= link_to 'bookmark file', workbook.bookmark.url  %>
+
+</p>
+<p>
+<%= link_to 'pdf file', workbook.pdf.url(:original, false)  %>
+
+</p>
+</div>
+</p>------</p>
 <% end %>

@@ -1,5 +1,7 @@
 class WorkbooksController < ApplicationController
-PDF_ROOT = "pdf"
+require 'fileutils'
+require "pdf/merger"
+PDF_ROOT = "temp_pdf"
 # def make_workbook(url)
 #   url2 = "http://www.apple.com"
 #   url2 = "http://www.google.com"
@@ -16,34 +18,34 @@ PDF_ROOT = "pdf"
   	return url_array 
   end
   
-  def make_pdf(id)
+  def make_pdf(id, list_of_URL_ids)
 	@workbook = Workbook.find(id)
-	count = @workbook.urls.where(use: true).count
 	if !File.directory? "#{PDF_ROOT}"
         Dir.mkdir("#{PDF_ROOT}") #make root dir if it doesn't exist?
     end
-    Dir.mkdir("#{PDF_ROOT}/#{id}/")
-	@workbook.urls.each do |link|
-	   if link.use?
-    	   
-	       kit = PDFKit.new(link.url)
-    	   file = kit.to_file("#{PDF_ROOT}/#{id}/#{count}.pdf") 
-    	   if count == 1 	           
-	           system("pdftk #{PDF_ROOT}/#{id}/*.pdf cat output #{PDF_ROOT}/#{id}/out.pdf")
-	           send_file "#{PDF_ROOT}/#{id}/out.pdf", :type=> 'application/pdf'
-	       end  
-    	   count -= 1		
-       end
+    if !File.directory? "#{PDF_ROOT}/#{id}/"
+    	Dir.mkdir("#{PDF_ROOT}/#{id}/")
     end
+	list_of_URL_ids.each do |url_id|
+	     @cur_url = @workbook.urls.find(url_id)
+	     kit = PDFKit.new(@cur_url.url, :print_media_type => true)
+	     file = kit.to_file("#{PDF_ROOT}/#{id}/#{url_id}.pdf")
+    end
+    
+    files_list = Dir.glob("#{PDF_ROOT}/#{id}/*.pdf")
+    pdf = PDF::Merger.new
+    for file in files_list
+      puts file
+      pdf.add_file file
+    end
+    
+    #system("pdftk #{PDF_ROOT}/#{id}/*.pdf cat output #{PDF_ROOT}/#{id}/out.pdf")
+    pdf.save_as "#{PDF_ROOT}/#{id}/out.pdf"
+    @workbook.pdf = File.open("#{PDF_ROOT}/#{id}/out.pdf")
+    @workbook.save!
+    FileUtils.rm_rf "#{PDF_ROOT}/#{id}/"
+    send_file @workbook.pdf.path, :type=> 'application/pdf'
   end  
-  
-  def join_pdfs(id)
-    count = Dir.entries("pdf/#{id}").size - 2
-    x = Dir.entries("pdf/#{id}") 
-    list = x.join(" ")
-    puts list
-    system("pdftk #{list} cat output out.pdf")
-  end
   
   def index
 	@workbooks = Workbook.all
@@ -132,10 +134,11 @@ PDF_ROOT = "pdf"
   end
   
   def choose
+  	Url.update_all(:use => false)
   	@workbook = Workbook.find(params[:workbook_id])
   	Url.update_all({:use => true}, :id => params[:url_ids])
-  	redirect_to @workbook
-  	make_pdf(@workbook.id)
-  	# join_pdfs(@workbook.id)
+  	make_pdf(@workbook.id, params[:url_ids])
+  	
+  	#redirect_to :action => "show", :id => @workbook.id
   end
 end
