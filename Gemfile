@@ -6,13 +6,20 @@ gem 'rails', '3.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # gem 'sqlite3'
-gem 'pg'
+#gem 'pg'
 gem 'pdfkit' 
 gem 'wkhtmltopdf'
 gem 'hirb'
 gem "pdf-merger", "~> 0.2.0"
 gem 'rjb'
 gem "paperclip", "~> 3.0"
+
+group :production do
+  gem 'pg'
+end
+group :development, :test do
+  gem 'sqlite3'
+end
 
 
 # Gems used only for assets and not required
