@@ -15,7 +15,7 @@ gem 'pdfkit'
 gem 'wkhtmltopdf'
 gem 'hirb'
 gem "pdf-merger", "~> 0.2.0"
-gem 'rjb'
+#gem 'rjb'
 gem "paperclip", "~> 3.0"
 #gem 'JRuby'
 
