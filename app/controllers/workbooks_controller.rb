@@ -1,3 +1,4 @@
+# encoding: utf-8
 class WorkbooksController < ApplicationController
 require 'fileutils'
 require "pdf/merger"
@@ -12,7 +13,7 @@ PDF_ROOT = "temp_pdf"
 #   system('pdftk 1.pdf 2.pdf cat output 3.pdf')
 # end
   def parse_bookmark_file(filepath)
-  	bookmark_file = File.new(filepath, "r", :encoding => "BINARY")
+  	bookmark_file = File.new(filepath, "rb", :encoding => "BINARY")
   	contents = bookmark_file.read
   	url_array = contents.scan(/\bhttps?:\/\/\S+\b/)
   	return url_array 
