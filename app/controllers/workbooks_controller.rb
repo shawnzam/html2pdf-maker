@@ -33,8 +33,6 @@ PDF_ROOT = "temp_pdf"
       puts file
       pdf.add_file file
     end
-    
-    #system("pdftk #{PDF_ROOT}/#{id}/*.pdf cat output #{PDF_ROOT}/#{id}/out.pdf")
     pdf.save_as "#{PDF_ROOT}/#{id}/out.pdf"
     @workbook.pdf = File.open("#{PDF_ROOT}/#{id}/out.pdf")
     @workbook.save!
