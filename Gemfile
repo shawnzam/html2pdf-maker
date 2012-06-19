@@ -1,7 +1,4 @@
-if RUBY_VERSION =~ /1.9/
-  Encoding.default_external = Encoding::UTF_8
-  Encoding.default_internal = Encoding::UTF_8
-end
+
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.3'
@@ -9,13 +6,16 @@ gem 'rails', '3.2.3'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-#gem 'sqlite3'
-gem 'pg'
+gem 'sqlite3'
+#gem 'pg'
+
+gem 'ruby-debug19'
+gem 'ruby-debug-base19'
 gem 'pdfkit' 
 gem 'wkhtmltopdf'
 gem 'hirb'
 gem "pdf-merger", "~> 0.2.0"
-#gem 'rjb'
+gem 'rjb'
 gem "paperclip", "~> 3.0"
 #gem 'JRuby'
 
