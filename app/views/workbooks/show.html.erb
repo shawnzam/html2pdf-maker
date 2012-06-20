@@ -8,11 +8,7 @@
 <%= link_to 'bookmark file', @workbook.bookmark.url  %>
 
 </p>
-<% if @workbook.pdf? %>
-    <p>
-    <%= link_to 'pdf file', @workbook.pdf.url(:original, false)  %>
-    </p>
-<% end %>
+
 
 <%= form_tag({:action => "choose", :controller => "workbooks", :workbook_id => @workbook.id}, :html => {:multipart => true }) do |f| %>
  	<ul>
@@ -28,7 +24,11 @@
  </ul>
   <%= submit_tag "Create PDF" %>
 <% end %>
-
+<% if @workbook.pdf? %>
+    <p>
+    <%= link_to 'pdf file', @workbook.pdf.url(:original, false), :target => "_blank"  %>
+    </p>
+<% end %>
 
 
 
