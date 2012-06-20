@@ -37,7 +37,7 @@ PDF_ROOT = "temp_pdf"
     @workbook.pdf = File.open("#{PDF_ROOT}/#{id}/out.pdf")
     @workbook.save!
     FileUtils.rm_rf "#{PDF_ROOT}/#{id}/"
-    send_file @workbook.pdf.path, :type=> 'application/pdf'
+    #send_file @workbook.pdf.path, :type=> 'application/pdf'
   end  
   
   def index
@@ -132,6 +132,6 @@ PDF_ROOT = "temp_pdf"
   	Url.update_all({:use => true}, :id => params[:url_ids])
   	make_pdf(@workbook.id, params[:url_ids])
   	
-  	#redirect_to :action => "show", :id => @workbook.id
+  	redirect_to :action => "show", :id => @workbook.id
   end
 end
